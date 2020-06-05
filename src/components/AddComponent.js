@@ -36,12 +36,11 @@ class AddComponent extends React.Component {
         })
     }
     handleCrossClick(e, id) {
-        e.stopPropagation();
+        e.stopPropagation(); //child onClick calls parent onClick solution
         const newState = this.state.todoList.filter(todoL => todoL.id !== id);
         this.setState({ todoList: newState });
     }
     handleTodoItemClick(id) {
-        const currState = this.state.todoList;
         const updatedState = this.state.todoList.map(todo => todo.id === id ? { ...todo, done: !todo.done } : todo)
         this.setState({ todoList: updatedState });
     }

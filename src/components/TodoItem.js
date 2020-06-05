@@ -1,10 +1,6 @@
 import React from 'react'
 
 class TodoItem extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
     render() {
         return (
             <div
@@ -12,8 +8,6 @@ class TodoItem extends React.Component {
                 onClick={() => this.props.clickTodo(this.props.id)
                 }>
                 {this.props.value}
-
-
                 <button
                     type="button"
                     className="close"

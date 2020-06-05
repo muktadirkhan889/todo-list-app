@@ -1,6 +1,5 @@
 .container {
     width: 650px;
-    /* background-color: #EEEEEE; */
 }
 
 @media only screen and (max-width : 649px) {
