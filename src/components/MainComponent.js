@@ -8,7 +8,8 @@ class AddComponent extends React.Component {
         super();
         this.state = {
             todoText: '',
-            todoList: []
+            todoList: [],
+            filterTodo: 'all'
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -16,6 +17,9 @@ class AddComponent extends React.Component {
         this.handleCrossClick = this.handleCrossClick.bind(this);
         this.handleTodoItemClick = this.handleTodoItemClick.bind(this);
         this.handleEnterKeyPress = this.handleEnterKeyPress.bind(this);
+        this.handleAllButtonClick = this.handleAllButtonClick.bind(this);
+        this.handleDoneButtonClick = this.handleDoneButtonClick.bind(this);
+        this.handlePendingButtonClick = this.handlePendingButtonClick.bind(this);
 
     }
 
@@ -61,9 +65,38 @@ class AddComponent extends React.Component {
         this.setState({ todoList: updatedState });
     }
 
-    render() {
+    handleAllButtonClick() {
+        this.setState({ filterTodo: "all" })
+    }
+    handlePendingButtonClick() {
+        this.setState({ filterTodo: "pending" })
+    }
+    handleDoneButtonClick() {
+        this.setState({ filterTodo: "done" })
+    }
 
-        const todos = this.state.todoList.map((todo) => {
+    componentDidMount() {
+        const json = localStorage.getItem('todos');
+        const todos = JSON.parse(json)
+        this.setState(todos);
+    }
+
+    componentDidUpdate(prevProps, prevStates) {
+        const json = JSON.stringify(this.state);
+        localStorage.setItem('todos', json);
+    }
+
+    render() {
+        const filteredTodos = this.state.todoList.filter(todo => {
+            if (this.state.filterTodo === "all") {
+                return true;
+            } else if (this.state.filterTodo === "done" && todo.done === true) {
+                return true;
+            } else if (this.state.filterTodo === "pending" && todo.done === false) {
+                return true;
+            } return false;
+        })
+        const todos = filteredTodos.map((todo) => {
             return (
                 <TodoItem key={todo.id} id={todo.id} value={todo.text} done={todo.done} clickCrossButton={this.handleCrossClick} clickTodo={this.handleTodoItemClick}>{todo.text}</TodoItem>
             )
@@ -108,6 +141,7 @@ class AddComponent extends React.Component {
                             name="All"
                             number={this.state.todoList.length}
                             buttonType="all"
+                            click={this.handleAllButtonClick}
                         />
                     }
 
@@ -118,6 +152,7 @@ class AddComponent extends React.Component {
                             name="Done"
                             number={this.state.todoList.filter(todo => todo.done).length}
                             buttonType="done"
+                            click={this.handleDoneButtonClick}
                         />
                     }
 
@@ -128,6 +163,7 @@ class AddComponent extends React.Component {
                             name="Pending"
                             number={this.state.todoList.filter(todo => !todo.done).length}
                             buttonType="pending"
+                            click={this.handlePendingButtonClick}
                         />
                     }
                 </div>

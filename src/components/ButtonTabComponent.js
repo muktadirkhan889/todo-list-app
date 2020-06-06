@@ -8,8 +8,21 @@ class ButtonTabComponent extends React.Component {
     }
     render() {
         return (
-            <button type="button" class={this.buttonObj[this.props.buttonType]} style={{ marginRight: "15px" }}>
-                {this.props.name} <span class="badge badge-light">{this.props.number}</span>
+            <button
+                type="button"
+                class={this.buttonObj[this.props.buttonType]}
+                style={{ marginRight: "15px" }}
+                onClick={() => this.props.click()}
+            >
+                {this.props.name}
+
+                {/* spacing between button and badge */}
+                <span style={{ marginLeft: "10px" }} />
+
+                <span
+                    class="badge badge-light"
+                >{this.props.number}</span>
+
             </button>
         );
     }
