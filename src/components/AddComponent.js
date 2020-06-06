@@ -13,6 +13,7 @@ class AddComponent extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleCrossClick = this.handleCrossClick.bind(this);
         this.handleTodoItemClick = this.handleTodoItemClick.bind(this);
+        this.handleEnterKeyPress = this.handleEnterKeyPress.bind(this);
     }
     handleChange(e) {
         e.persist();
@@ -25,15 +26,22 @@ class AddComponent extends React.Component {
     }
     handleClick() {
         this.setState((prevState) => {
-            return {
-                todoText: prevState.todoText,
-                todoList: [{
-                    text: prevState.todoText,
-                    id: shortid.generate(),
-                    done: false
-                }, ...prevState.todoList]
+            if (prevState.todoText.trim() !== '') {
+                return {
+                    todoText: '',
+                    todoList: [{
+                        text: prevState.todoText.trim(),
+                        id: shortid.generate(),
+                        done: false
+                    }, ...prevState.todoList]
+                }
             }
         })
+    }
+    handleEnterKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.handleClick();
+        }
     }
     handleCrossClick(e, id) {
         e.stopPropagation(); //child onClick calls parent onClick solution
@@ -54,14 +62,17 @@ class AddComponent extends React.Component {
         })
         return (
             <div>
-                <div className="row">
+                <div className="row" style={{ marginBottom: "10px" }}>
                     <div className="col-sm-9">
                         <div className="form-group">
                             <input
                                 type="text"
                                 className="form-control"
                                 placeholder="Add a Todo"
+                                maxLength="30"
                                 onChange={this.handleChange}
+                                onKeyPress={this.handleEnterKeyPress}
+                                value={this.state.todoText}
                             />
                         </div>
                     </div>

@@ -4,7 +4,7 @@ class TodoItem extends React.Component {
     render() {
         return (
             <div
-                className={this.props.done ? 'alert alert-success alert-dismissible fade show' : 'alert alert-secondary alert-dismissible fade show'}
+                className={this.props.done ? 'alert alert-success alert-dismissible fade show strike' : 'alert alert-secondary alert-dismissible fade show'}
                 onClick={() => this.props.clickTodo(this.props.id)
                 }>
                 {this.props.value}
